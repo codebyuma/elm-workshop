@@ -5,13 +5,23 @@
 -}
 
 
-module Main exposing (..)
+module Main exposing (myRecord)
 
 
 myRecord =
+    { truth = True
+    , someNum = 12.3
+    , word = "string"
+    }
 
 
 myList =
+    [ "one", "two", "three" ]
 
 
 verifyName name =
+    if name == "Uma" then
+        True
+
+    else
+        False

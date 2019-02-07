@@ -1,6 +1,7 @@
 -- Convert The code from "The Problem" to use Union types for Msg
 
-module FullApp exposing (..)
+
+module FullApp exposing (Model, Msg(..), initModel, main, update, view)
 
 import Browser
 import Html exposing (Html, button, div, input, text)
@@ -11,7 +12,10 @@ type alias Model =
     { count : Int, searchText : String }
 
 
-type Msg = ???
+type Msg
+    = Increment Int
+    | Decrement Int
+    | SearchText String
 
 
 initModel : Model
@@ -21,30 +25,27 @@ initModel =
 
 update : Msg -> Model -> Model
 update msg model =
-    case msg.operation of
-        "Increment" ->
-            { model | count = model.count + msg.amount }
+    case msg of
+        Increment amount ->
+            { model | count = model.count + amount }
 
-        "Decrement" ->
-            { model | count = model.count - msg.amount }
+        Decrement amount ->
+            { model | count = model.count - amount }
 
-        "Search" ->
-            { model | searchText = msg.searchText }
-
-        _ ->
-            model
+        SearchText text ->
+            { model | searchText = text }
 
 
 view : Model -> Html Msg
 view model =
     div []
-        [ div [] [ model |> toString |> text ]
-        , button [ onClick { operation = "Increment", amount = 2 } ] [ text "Increment 2" ]
-        , button [ onClick { operation = "Decrement", amount = 2 } ] [ text "Decerement 2" ]
-        , button [ onClick { operation = "Search", searchText = "Elm tutorials!" } ] [ text "Search" ]
+        [ div [] [ model.count |> String.fromInt |> text ]
+        , button [ onClick (Increment 2) ] [ text "Increment 2" ]
+        , button [ onClick (Decrement 2) ] [ text "Decerement 2" ]
+        , button [ onClick (SearchText "Elm tutorials!") ] [ text "Search" ]
         , div [] [ text model.searchText ]
         ]
 
 
 main =
-    Browser.sandbox { initModel = initModel, view = view, update = update }
+    Browser.sandbox { init = initModel, view = view, update = update }

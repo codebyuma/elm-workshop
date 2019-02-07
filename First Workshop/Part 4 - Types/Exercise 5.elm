@@ -1,7 +1,7 @@
 -- Write type annotations using type aliases where it makes sense
 
 
-module Exercise5 exposing (..)
+module Exercise5 exposing (Model, Msg, initModel, main, update, view)
 
 import Browser
 import Html exposing (Html, button, div, text)
@@ -9,14 +9,23 @@ import Html.Events exposing (onClick)
 
 
 type alias Model =
+    Int
 
 
 type alias Msg =
+    { operation : String, amount : Int }
 
+
+initModel : Model
 initModel =
     0
 
 
+
+-- update takes in a message and a model and returns a model
+
+
+update : Msg -> Model -> Model
 update msg model =
     case msg.operation of
         "Increment" ->
@@ -32,9 +41,10 @@ update msg model =
 
 -- Helpful hint: view: ??? -> Html ???
 
+
 view model =
     div []
-        [ div [] [ model |> toString |> text ]
+        [ div [] [ model |> String.fromInt |> text ]
         , button [ onClick { operation = "Increment", amount = 2 } ] [ text "Increment 2" ]
         , button [ onClick { operation = "Decrement", amount = 2 } ] [ text "Decerement 2" ]
         ]
@@ -45,4 +55,4 @@ view model =
 
 
 main =
-    Browser.sandbox { initModel = initModel, view = view, update = update }
+    Browser.sandbox { init = initModel, view = view, update = update }
